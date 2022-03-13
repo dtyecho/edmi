@@ -22,8 +22,15 @@ class FormationDoctorale
     #[ORM\JoinColumn(nullable: false)]
     private $responsable;
 
+    #[ORM\ManyToOne(targetEntity: Laboratoire::class, inversedBy: 'formationDoctorales')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $laboRattache;
+
     #[ORM\OneToMany(mappedBy: 'formationDoctorale', targetEntity: EtablissementDoctoral::class)]
     private $ecoleRattache;
+
+    #[ORM\ManyToOne(targetEntity: Dossier::class, inversedBy: 'formationDoctorale')]
+    private $dossier;
 
     public function __construct()
     {
@@ -60,6 +67,18 @@ class FormationDoctorale
         return $this;
     }
 
+    public function getLaboRattache(): ?Laboratoire
+    {
+        return $this->laboRattache;
+    }
+
+    public function setLaboRattache(?Laboratoire $laboRattache): self
+    {
+        $this->laboRattache = $laboRattache;
+
+        return $this;
+    }
+
     /**
      * @return Collection<int, EtablissementDoctoral>
      */
@@ -86,6 +105,18 @@ class FormationDoctorale
                 $ecoleRattache->setFormationDoctorale(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDossier(): ?Dossier
+    {
+        return $this->dossier;
+    }
+
+    public function setDossier(?Dossier $dossier): self
+    {
+        $this->dossier = $dossier;
 
         return $this;
     }

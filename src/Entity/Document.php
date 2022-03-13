@@ -34,6 +34,10 @@ class Document
     #[ORM\Column(type: 'datetime')]
     private ?\DateTimeInterface $updatedAt = null;
 
+    #[ORM\ManyToOne(targetEntity: Dossier::class, inversedBy: 'pieceJointe')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $dossier;
+
     // fin gestion
 
     public function getId(): ?int
@@ -99,4 +103,16 @@ class Document
     }
 
     // TODO metre en place l'uplad de fichier
+
+    public function getDossier(): ?Dossier
+    {
+        return $this->dossier;
+    }
+
+    public function setDossier(?Dossier $dossier): self
+    {
+        $this->dossier = $dossier;
+
+        return $this;
+    }
 }

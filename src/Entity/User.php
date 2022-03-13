@@ -6,8 +6,12 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\InheritanceType("JOINED")]
+#[ORM\DiscriminatorColumn(name: "type", type: "string")]
+#[ORM\DiscriminatorMap(["etudiant" => Etudiant::class, "professeur" => Professeur::class])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -16,6 +20,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $id;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
+    #[Assert\NotBlank]
+    #[Assert\Email(
+        message: 'Le mail {{ value }} n\'est pas valide'
+    )]
     private $email;
 
     #[ORM\Column(type: 'json')]
@@ -25,21 +33,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $password;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 2
+    )]
     private $name;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 2
+    )]
     private $firstname;
 
     #[ORM\Column(type: 'datetime')]
+    #[Assert\NotBlank]
+    #[Assert\Date(
+        message: "Date invalide, la date doit être inférieure à l'année en cours"
+    )]
     private $birthDate;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
     private $birthPlace;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
     private $adresse;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
     private $tel;
 
     public function getId(): ?int

@@ -6,7 +6,14 @@
  */
 
 // any CSS you import will output into a single css file (app.css in this case)
+import {Swiper, SwiperSlide} from 'swiper';
+import 'swiper/css/bundle'
+import 'remixicon/fonts/remixicon.css'
+import 'isotope-layout'
+import GLightbox from 'glightbox';
 import './styles/app.css';
 
 // start the Stimulus application
 import './bootstrap';
+require('./main');
+

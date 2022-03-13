@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\DossierRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DossierRepository::class)]
@@ -39,6 +41,7 @@ class Dossier
     #[ORM\Column(type: 'string', length: 255)]
     private $themeRecherche;
 
+
     #[ORM\Column(type: 'string', length: 255)]
     private $mention;
 
@@ -56,6 +59,18 @@ class Dossier
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $avisChefEcoleRattache;
+
+    #[ORM\OneToMany(mappedBy: 'dossier', targetEntity: FormationDoctorale::class)]
+    private $formationDoctorale;
+
+    #[ORM\OneToMany(mappedBy: 'dossier', targetEntity: Document::class)]
+    private $pieceJointe;
+
+    public function __construct()
+    {
+        $this->formationDoctorale = new ArrayCollection();
+        $this->pieceJointe = new ArrayCollection();
+    }
 
 
     public function getId(): ?int
@@ -239,6 +254,66 @@ class Dossier
     public function setAvisChefEcoleRattache(?string $avisChefEcoleRattache): self
     {
         $this->avisChefEcoleRattache = $avisChefEcoleRattache;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FormationDoctorale>
+     */
+    public function getFormationDoctorale(): Collection
+    {
+        return $this->formationDoctorale;
+    }
+
+    public function addFormationDoctorale(FormationDoctorale $formationDoctorale): self
+    {
+        if (!$this->formationDoctorale->contains($formationDoctorale)) {
+            $this->formationDoctorale[] = $formationDoctorale;
+            $formationDoctorale->setDossier($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFormationDoctorale(FormationDoctorale $formationDoctorale): self
+    {
+        if ($this->formationDoctorale->removeElement($formationDoctorale)) {
+            // set the owning side to null (unless already changed)
+            if ($formationDoctorale->getDossier() === $this) {
+                $formationDoctorale->setDossier(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Document>
+     */
+    public function getPieceJointe(): Collection
+    {
+        return $this->pieceJointe;
+    }
+
+    public function addPieceJointe(Document $pieceJointe): self
+    {
+        if (!$this->pieceJointe->contains($pieceJointe)) {
+            $this->pieceJointe[] = $pieceJointe;
+            $pieceJointe->setDossier($this);
+        }
+
+        return $this;
+    }
+
+    public function removePieceJointe(Document $pieceJointe): self
+    {
+        if ($this->pieceJointe->removeElement($pieceJointe)) {
+            // set the owning side to null (unless already changed)
+            if ($pieceJointe->getDossier() === $this) {
+                $pieceJointe->setDossier(null);
+            }
+        }
 
         return $this;
     }

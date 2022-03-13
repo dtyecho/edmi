@@ -23,16 +23,6 @@ class Professeur extends User
     #[ORM\Column(type: 'string', length: 255)]
     private $grade;
 
-    // #[ORM\Id]
-    // #[ORM\GeneratedValue]
-    // #[ORM\Column(type: 'integer')]
-    // private $id;
-
-    // public function getId(): ?int
-    // {
-    //     return $this->id;
-    // }
-
     public function getLaboratoire(): ?Laboratoire
     {
         return $this->laboratoire;
@@ -108,5 +98,10 @@ class Professeur extends User
         return $this;
     }
 
-    
+    public function __toString(): string
+    {
+        return $this->getName()." ".$this->getFirstname();
+    }
+
+
 }

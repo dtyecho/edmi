@@ -4,7 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\EtablissementDoctoral;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class EtablissementDoctoralCrudController extends AbstractCrudController
@@ -18,10 +18,9 @@ class EtablissementDoctoralCrudController extends AbstractCrudController
     {
         return [
             TextField::new('nomEtablissement'),
-            CollectionField::new('chefEtablissement')->allowAdd(false)->allowDelete(false)
+            AssociationField::new('chefEtablissement')
         ];
     }
-
     /*
     public function configureFields(string $pageName): iterable
     {

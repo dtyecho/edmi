@@ -1,0 +1,63 @@
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+{% extends 'base.html.twig' %}
+{% block title %}Hello SubscriptionController!{% endblock %}
+
+{% block body %}
+    {{ include('fragments/_nav.html.twig') }}
+    <main id="main" class="admission">
+        <section class="container mt-5">
+            <h2 class="">Admission Demande</h2>
+            {{ form_start(form) }}
+            {{ form_row(form.owner) }}
+            {{ form_row(form.diplomeAcces) }}
+            {{ form_row(form.mention) }}
+            {{ form_row(form.specialite) }}
+            {{ form_row(form.UnivDelivreDiplome) }}
+            {{ form_row(form.lieuObtentionDiplome) }}
+            {{ form_row(form.pays) }}
+            {{ form_row(form.dateObtentionDiplome) }}
+            {{ form_row(form.formationDoctorale) }}
+            {{ form_row(form.pieceJointe) }}
+            <input type="submit" value="Soumettre" class="btn btn-primary mb-5">
+            {{ form_end(form, {render_rest : false}) }}
+        </section>
+
+    </main>
+
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+    {{ include('fragments/_footer.html.twig') }}
+{% endblock %}
+
+
+{% block _dossier_document_widget %}
+    <p>Ajouter les documents requis</p>
+    {{ form_widget(form) }}
+    <input type="hidden" id="widgets-counter" value="0">
+    <div class="form-group">
+        <button type="button" id="add-document" class="btn btn-primary mt-3">Ajouter un document</button>
+    </div>
+{% endblock %}
+
+{% block _dossier_document_entry_row %}
+    {{ form_widget(form) }}
+{% endblock %}
+{% block _dossier_document_entry_widget %}
+    <div class="form-group" id="block_{{ id }}">
+        <div class="row">
+            <div class="col-10">
+                <div class="row">
+                    <div class="col">
+                        {{ form_widget(form.nomDocument) }}
+                    </div>
+                    <div class="col">
+                        {{ form_widget(form.documentFile) }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <button type="button" data-action="delete" data-target="#block_{{ id }}" class="btn btn-danger">X</button>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
