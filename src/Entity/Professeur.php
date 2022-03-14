@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProfesseurRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProfesseurRepository::class)]
@@ -22,6 +24,14 @@ class Professeur extends User
 
     #[ORM\Column(type: 'string', length: 255)]
     private $grade;
+
+    #[ORM\OneToMany(mappedBy: 'directeurThese', targetEntity: Dossier::class)]
+    private $dossiers;
+
+    public function __construct()
+    {
+        $this->dossiers = new ArrayCollection();
+    }
 
     public function getLaboratoire(): ?Laboratoire
     {
@@ -101,6 +111,36 @@ class Professeur extends User
     public function __toString(): string
     {
         return $this->getName()." ".$this->getFirstname();
+    }
+
+    /**
+     * @return Collection<int, Dossier>
+     */
+    public function getDossiers(): Collection
+    {
+        return $this->dossiers;
+    }
+
+    public function addDossier(Dossier $dossier): self
+    {
+        if (!$this->dossiers->contains($dossier)) {
+            $this->dossiers[] = $dossier;
+            $dossier->setDirecteurThese($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDossier(Dossier $dossier): self
+    {
+        if ($this->dossiers->removeElement($dossier)) {
+            // set the owning side to null (unless already changed)
+            if ($dossier->getDirecteurThese() === $this) {
+                $dossier->setDirecteurThese(null);
+            }
+        }
+
+        return $this;
     }
 
 

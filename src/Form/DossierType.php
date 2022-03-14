@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Document;
 use App\Entity\Dossier;
 use App\Entity\FormationDoctorale;
+use App\Entity\Professeur;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -89,6 +90,11 @@ class DossierType extends FormConfig
                 'attr' => [
 
                 ]
+            ]))
+            ->add('directeurThese', EntityType::class, $this->getConfiguration('Directeur de thèse', '', [
+                'class' => Professeur::class,
+                'choice_label' => 'firstname'. ' '. 'name',
+                'required' => true,
             ]))
             ->add('avisDirecteurTheses', ChoiceType::class, $this->getConfiguration('Avis du directeur de thèse', '', [
                 'choices' => [

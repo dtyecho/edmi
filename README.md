@@ -1,4 +1,13 @@
 # edmi
 gestion de l'école doctorale
-lancer
+# installation des packages
+```
 composer install
+npm install
+composer req encore
+```
+## Demarrer l'application
+```
+npm run dev
+symfony serve -d
+```

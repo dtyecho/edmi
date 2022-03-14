@@ -66,6 +66,10 @@ class Dossier
     #[ORM\OneToMany(mappedBy: 'dossier', targetEntity: Document::class)]
     private $pieceJointe;
 
+    #[ORM\ManyToOne(targetEntity: Professeur::class, inversedBy: 'dossiers')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $directeurThese;
+
     public function __construct()
     {
         $this->formationDoctorale = new ArrayCollection();
@@ -314,6 +318,18 @@ class Dossier
                 $pieceJointe->setDossier(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDirecteurThese(): ?Professeur
+    {
+        return $this->directeurThese;
+    }
+
+    public function setDirecteurThese(?Professeur $directeurThese): self
+    {
+        $this->directeurThese = $directeurThese;
 
         return $this;
     }
